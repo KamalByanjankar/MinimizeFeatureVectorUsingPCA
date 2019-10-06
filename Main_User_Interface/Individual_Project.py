@@ -2,6 +2,7 @@ import sys
 import os
 from os.path import basename
 from glob import glob
+import pickle
 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
@@ -18,6 +19,7 @@ class Widget(QWidget):
         super().__init__()
         uifile = os.path.join(os.path.dirname(__file__), 'Individual_Project.ui')
         self.ui = loadUi(uifile, self)
+        
         
         for elem in self.ui.children():
             name = elem.objectName()
@@ -43,14 +45,27 @@ class Widget(QWidget):
         self.ML_frame.hide()
     
     def load_file(self):
+        directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        paths = glob(f'{directory}')
+        self.browse_file_input.setText(directory)
+        files = []
+        if len(paths) > 0:
+            for p in paths:
+                files += glob(f'{p}/*.csv')
+        self.load_files_in_table(files)
         
-    
+    def load_files_in_table(self, files):
+        self.table.setRowCount(len(files))
+        for row, item in enumerate(files):
+            self.table.setItem(row, 0, QTableWidgetItem(item.split('/')[-1]))
+            self.table.setItem(row, 1, QTableWidgetItem(basename(item)))
+
     def select_ML(self):
         self.echo_frame.hide()
         self.ML_frame.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    win = Widget()
-    win.show()
+    w = Widget()
+    w.show()
     sys.exit(app.exec_())
