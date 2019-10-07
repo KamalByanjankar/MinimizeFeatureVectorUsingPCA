@@ -46,18 +46,24 @@ class Widget(QWidget):
     
     def load_file(self):
         directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
-        paths = glob(f'{directory}')
+        paths = glob(f'{directory}/*')
         self.browse_file_input.setText(directory)
         files = []
         if len(paths) > 0:
             for p in paths:
                 files += glob(f'{p}/*.csv')
+            
+            if not files:
+                files = paths
         self.load_files_in_table(files)
         
     def load_files_in_table(self, files):
         self.table.setRowCount(len(files))
         for row, item in enumerate(files):
-            self.table.setItem(row, 0, QTableWidgetItem(item.split('/')[-1]))
+            filename = item.split('/')[-1]
+            if filename.split('\\')[0]:
+                filename =  filename.split('\\')[0]
+            self.table.setItem(row, 0, QTableWidgetItem(filename))
             self.table.setItem(row, 1, QTableWidgetItem(basename(item)))
 
     def select_ML(self):
