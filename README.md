@@ -1,5 +1,7 @@
-The data collected using the Ultrasonic sensor in a Garage is first analysed and plotted to observe the graphs.
+The data collected using the Ultrasonic sensor in a Garage is first analysed and plotted to observe the graphs. In the garage, the data were collected from different objects like car, pillar, human, wall, motorbike, concrete, and cycle. These collected data are first filtered and required echo/reflected signals were chopped off. These chopped off data are then further analysed using Fast Fourier Transform.
 
-Then, the noise is removed and required echo data points of 512 is extracted from the captured data set.
+The chopped data before using FFT were 512 data points. After implementing FFT with sampling frequency of 114KHz and the freuency range from 30KHz to 50KHz, we found the 90 data points which are to be known as features data set. These features are then saved into csv for further processing.
 
-For the further processing, Machine Learning algrithms have been used to measure the accuracy from the testing data set.
+The data observed from FFT is then further used in the machine learning classification models. Random Forest classification and K-Nearest Neighbors are two supervised classification models used. Then, implementing these models we determine the accuracy, precision score and recall score. By observing these factors, we determine the best model for classification for classification of Human and non-Human objects as well as classification of objects.
+
+The output of FFT, that is 90 data points or features are finally minimized using Principal Component analysis (PCA). We have minimized our 90 feeatures into 14 features and again applied those machine learning models and again determined the best model for classification of Human and non-Human objects as well as classification of objects.
